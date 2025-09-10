@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-09-10
+
+### Fixed
+- **NPM Package**: Fixed missing `dist/` files in published npm package
+  - Created `.npmignore` file to include built files while excluding source files
+  - CLI now works correctly when installed via `npm install -g dchk`
+  - Package size increased from 31.5 kB to 205.9 kB to include compiled code
+
+### Added
+- **README Badges**: Added npm version, downloads, license, and Node.js version badges
+  - Provides quick overview of package status and compatibility
+  - Follows standard npm package README conventions
+
 ## [0.1.0] - 2025-09-10
 
 ### Added
