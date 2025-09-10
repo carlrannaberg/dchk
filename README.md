@@ -1,5 +1,10 @@
 # dchk (domain availability check)
 
+[![npm version](https://img.shields.io/npm/v/dchk.svg)](https://www.npmjs.com/package/dchk)
+[![npm downloads](https://img.shields.io/npm/dt/dchk.svg)](https://www.npmjs.com/package/dchk)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/node/v/dchk.svg)](https://nodejs.org)
+
 A fast, UNIX-style domain availability checker using the RDAP protocol.
 
 ## Overview
