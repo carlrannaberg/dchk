@@ -62,6 +62,14 @@
     "whois",
     "dchk"
   ],
-  "author": "",
-  "license": "MIT"
+  "author": "Carl Rannaberg",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carlrannaberg/dchk.git"
+  },
+  "homepage": "https://github.com/carlrannaberg/dchk",
+  "bugs": {
+    "url": "https://github.com/carlrannaberg/dchk/issues"
+  }
 }
