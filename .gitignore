@@ -49,3 +49,16 @@ Thumbs.db
 *.temp
 temp/
 tmp/
+# Temporary files and debugging
+/temp/
+temp/
+**/temp/
+debug-*.js
+test-*.py
+analyze-*.sh
+*-debug.*
+*.debug
+
+# Don't ignore reports directory
+!reports/
+!reports/**
