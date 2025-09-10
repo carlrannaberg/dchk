@@ -1,0 +1,18 @@
+#!/usr/bin/env node
+
+// This is a wrapper script for the dchk CLI
+// It ensures the CLI runs correctly when installed globally or via npx
+
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
+const cliModule = require('../dist/cli.cjs');
+if (cliModule.runCli) {
+  cliModule.runCli().catch((error) => {
+    console.error('Failed to load dchk CLI:', error.message);
+    process.exit(1);
+  });
+} else {
+  console.error('Failed to find runCli function in CLI module');
+  process.exit(1);
+}
