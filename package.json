@@ -1,6 +1,6 @@
 {
   "name": "dchk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "UNIX-style domain availability checker (RDAP-first)",
   "type": "module",
   "engines": {
@@ -55,7 +55,7 @@
   },
   "keywords": [
     "domain",
-    "rdap", 
+    "rdap",
     "availability",
     "cli",
     "unix",
