@@ -61,8 +61,8 @@ function interpretRdapResponse(
   httpStatus: number,
   json: any
 ): { status: Status; errorCode?: number } {
-  // HTTP 200 with valid JSON = registered
-  if (httpStatus === 200 && json) {
+  // HTTP 200 = registered (even with null/bad JSON)
+  if (httpStatus === 200) {
     const errorCode = parseErrorCode(json);
     if (errorCode === 404) {
       return { status: 'available', errorCode };
@@ -184,7 +184,12 @@ export function isValidDomain(domain: string): boolean {
     return false;
   }
 
-  // Basic domain validation
-  const domainRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+  // Domain must have at least one dot (TLD required)
+  if (!domain.includes('.')) {
+    return false;
+  }
+
+  // Basic domain validation - must have at least 2 parts (name.tld)
+  const domainRegex = /^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
   return domainRegex.test(domain) && domain.length <= 253;
 }
