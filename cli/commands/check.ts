@@ -74,17 +74,42 @@ export async function check(domains: string[], options: CheckOptions = {}): Prom
 
     // Output results
     if (options.verbose) {
-      // Verbose mode: detailed output
-      for (const result of results) {
-        const statusText = result.status === 'available' ? 'AVAILABLE' : 
-                          result.status === 'registered' ? 'REGISTERED' : 'UNKNOWN';
-        const responseTime = result.responseTimeMs ? ` (${result.responseTimeMs}ms)` : '';
-        const source = result.source ? ` via ${new URL(result.source).hostname}` : '';
+      // Verbose mode: table format
+      const tableData = results.map(result => ({
+        domain: result.domain,
+        status: result.status === 'available' ? 'AVAILABLE' : 
+                result.status === 'registered' ? 'REGISTERED' : 'UNKNOWN',
+        responseTime: result.responseTimeMs ? `${result.responseTimeMs}ms` : '-',
+        source: (() => {
+          if (!result.source) return '-';
+          if (!result.source.startsWith('http')) return result.source;
+          try { 
+            return new URL(result.source).hostname; 
+          } catch { 
+            return result.source; 
+          }
+        })(),
+        result
+      }));
+
+      // Calculate column widths
+      const domainWidth = Math.max(6, ...tableData.map(r => r.domain.length));
+      const statusWidth = Math.max(6, ...tableData.map(r => r.status.length));
+      const timeWidth = Math.max(4, ...tableData.map(r => r.responseTime.length));
+      const sourceWidth = Math.max(6, ...tableData.map(r => r.source.length));
+
+      // Print table header
+      const header = `${'DOMAIN'.padEnd(domainWidth)}  ${'STATUS'.padEnd(statusWidth)}  ${'TIME'.padEnd(timeWidth)}  ${'SOURCE'.padEnd(sourceWidth)}`;
+      console.log(header);
+      console.log('─'.repeat(header.length));
+
+      // Print table rows
+      for (const row of tableData) {
+        const line = `${row.domain.padEnd(domainWidth)}  ${row.status.padEnd(statusWidth)}  ${row.responseTime.padEnd(timeWidth)}  ${row.source.padEnd(sourceWidth)}`;
+        console.log(line);
         
-        console.log(`${result.domain}: ${statusText}${responseTime}${source}`);
-        
-        if (result.status === 'unknown' && result.httpStatus) {
-          console.error(`  HTTP ${result.httpStatus}${result.errorCode ? `, Error ${result.errorCode}` : ''}`);
+        if (row.result.status === 'unknown' && row.result.httpStatus) {
+          console.error(`${''.padEnd(domainWidth)}  HTTP ${row.result.httpStatus}${row.result.errorCode ? `, Error ${row.result.errorCode}` : ''}`);
         }
       }
     } else {
