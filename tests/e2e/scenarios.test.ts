@@ -77,8 +77,9 @@ describe('End-to-End Scenarios', () => {
       const result = await runE2E(['--verbose', 'google.com']);
       
       expect([0, 1]).toContain(result.exitCode);
-      expect(result.stdout).toMatch(/google\.com: (AVAILABLE|REGISTERED) \(\d+ms\)/);
-      expect(result.stdout).toContain('via '); // Should show source
+      // Should show table format with timing and sources
+      expect(result.stdout).toMatch(/DOMAIN\s+STATUS\s+TIME\s+SOURCE/);
+      expect(result.stdout).toMatch(/google\.com\s+(AVAILABLE|REGISTERED)\s+\d+ms/);
       expect(result.duration).toBeLessThan(10000);
     });
   });
@@ -206,8 +207,9 @@ describe('End-to-End Scenarios', () => {
       const result = await runE2E(['--verbose', 'example.com']);
       
       expect([0, 1]).toContain(result.exitCode);
-      // Should show final authoritative source after redirects
-      expect(result.stdout).toMatch(/via \w+/);
+      // Should show final authoritative source in table format
+      expect(result.stdout).toMatch(/SOURCE/);
+      expect(result.stdout).toMatch(/example\.com\s+(AVAILABLE|REGISTERED)\s+\d+ms/);
       expect(result.duration).toBeLessThan(10000);
     });
 
@@ -309,8 +311,10 @@ describe('End-to-End Scenarios', () => {
       const result = await runE2E(['--verbose', '--concurrency', '2', ...domains]);
       
       expect([0, 1]).toContain(result.exitCode);
+      // Should show table format for multiple domains
+      expect(result.stdout).toMatch(/DOMAIN\s+STATUS\s+TIME\s+SOURCE/);
       domains.forEach(domain => {
-        expect(result.stdout).toMatch(new RegExp(`${domain.replace('.', '\\.')}: (AVAILABLE|REGISTERED) \\(\\d+ms\\)`));
+        expect(result.stdout).toMatch(new RegExp(`${domain.replace('.', '\\.')}\\s+(AVAILABLE|REGISTERED)\\s+\\d+ms`));
       });
     });
 

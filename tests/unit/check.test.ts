@@ -222,8 +222,13 @@ describe('Check Command', () => {
       
       await check(['example.com'], { verbose: true });
       
+      // Check for table header
       expect(mockConsoleLog).toHaveBeenCalledWith(
-        'example.com: AVAILABLE (150ms) via rdap.org'
+        expect.stringContaining('DOMAIN')
+      );
+      // Check for table row
+      expect(mockConsoleLog).toHaveBeenCalledWith(
+        expect.stringContaining('example.com  AVAILABLE  150ms  rdap.org')
       );
     });
 
@@ -240,8 +245,13 @@ describe('Check Command', () => {
       
       await check(['google.com'], { verbose: true });
       
+      // Check for table header
       expect(mockConsoleLog).toHaveBeenCalledWith(
-        'google.com: REGISTERED (120ms) via rdap.verisign.com'
+        expect.stringContaining('DOMAIN')
+      );
+      // Check for table row
+      expect(mockConsoleLog).toHaveBeenCalledWith(
+        expect.stringContaining('google.com  REGISTERED  120ms  rdap.verisign.com')
       );
     });
 
@@ -257,8 +267,16 @@ describe('Check Command', () => {
       
       await check(['error.com'], { verbose: true });
       
-      expect(mockConsoleLog).toHaveBeenCalledWith('error.com: UNKNOWN (200ms)');
-      expect(mockConsoleError).toHaveBeenCalledWith('  HTTP 500');
+      // Check for table header and row
+      expect(mockConsoleLog).toHaveBeenCalledWith(
+        expect.stringContaining('DOMAIN')
+      );
+      expect(mockConsoleLog).toHaveBeenCalledWith(
+        expect.stringContaining('error.com  UNKNOWN  200ms  -')
+      );
+      expect(mockConsoleError).toHaveBeenCalledWith(
+        expect.stringContaining('HTTP 500')
+      );
     });
 
     it('should be quiet when quiet option is set', async () => {

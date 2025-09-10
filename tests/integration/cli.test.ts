@@ -133,8 +133,9 @@ describe('CLI Integration Tests', () => {
       expect(result.timedOut).toBe(false);
       expect([0, 1]).toContain(result.exitCode);
       
-      // Verbose output should include response time and source
-      expect(result.stdout).toMatch(/google\.com: (AVAILABLE|REGISTERED) \(\d+ms\)/);
+      // Verbose output should include table format with response time and source
+      expect(result.stdout).toMatch(/DOMAIN\s+STATUS\s+TIME\s+SOURCE/);
+      expect(result.stdout).toMatch(/google\.com\s+(AVAILABLE|REGISTERED)\s+\d+ms/);
     });
 
     it('should handle multiple domains', async () => {
