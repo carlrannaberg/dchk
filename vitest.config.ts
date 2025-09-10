@@ -20,7 +20,7 @@ export default defineConfig({
     },
     include: ['tests/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     exclude: ['node_modules', 'dist', '.git'],
-    testTimeout: 10000,
+    testTimeout: 30000, // Increased for E2E tests with network requests
     hookTimeout: 10000
   }
 });

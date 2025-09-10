@@ -7,19 +7,29 @@ let ianaCache: IanaCache | null = null;
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 
 async function fetchIanaBootstrap(): Promise<any> {
-  const response = await fetch('https://data.iana.org/rdap/dns.json', {
-    timeout: 8000,
-    headers: {
-      'Accept': 'application/json',
-      'User-Agent': 'dchk/0.1.0'
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 8000);
+  
+  try {
+    const response = await fetch('https://data.iana.org/rdap/dns.json', {
+      signal: controller.signal,
+      headers: {
+        'Accept': 'application/json',
+        'User-Agent': 'dchk/0.1.0'
+      }
+    });
+    
+    clearTimeout(timeoutId);
+    
+    if (!response.ok) {
+      throw new Error(`IANA bootstrap fetch failed: ${response.status}`);
     }
-  });
-
-  if (!response.ok) {
-    throw new Error(`IANA bootstrap fetch failed: ${response.status}`);
+    
+    return await response.json();
+  } catch (error) {
+    clearTimeout(timeoutId);
+    throw error;
   }
-
-  return await response.json();
 }
 
 /**
@@ -50,7 +60,11 @@ async function getIanaBootstrap(): Promise<any> {
  */
 function extractTld(domain: string): string | null {
   const parts = domain.toLowerCase().split('.');
-  return parts.length > 1 ? parts[parts.length - 1] : null;
+  if (parts.length > 1) {
+    const tld = parts[parts.length - 1];
+    return tld || null;
+  }
+  return null;
 }
 
 /**
@@ -77,7 +91,7 @@ export async function getAuthoritativeRdapUrl(domain: string): Promise<string | 
     }
 
     // Return the first (primary) RDAP URL
-    return service[1][0];
+    return service[1][0] || null;
   } catch {
     return null;
   }

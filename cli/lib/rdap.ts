@@ -82,7 +82,10 @@ function interpretRdapResponse(
   }
 
   // Everything else is unknown
-  return { status: 'unknown', errorCode };
+  if (errorCode !== undefined) {
+    return { status: 'unknown', errorCode };
+  }
+  return { status: 'unknown' };
 }
 
 async function checkViaRdapOrg(
@@ -94,14 +97,19 @@ async function checkViaRdapOrg(
     const result = await fetchJson(url, timeoutMs);
     const interpretation = interpretRdapResponse(result.status, result.json);
 
-    return {
+    const checkResult: CheckResult = {
       domain,
       status: interpretation.status,
       httpStatus: result.status,
-      errorCode: interpretation.errorCode,
       source: result.finalUrl === url ? 'rdap.org' : result.finalUrl,
       responseTimeMs: result.responseTimeMs
     };
+
+    if (interpretation.errorCode !== undefined) {
+      checkResult.errorCode = interpretation.errorCode;
+    }
+
+    return checkResult;
   } catch (error) {
     return {
       domain,
@@ -129,14 +137,19 @@ async function checkViaAuthoritative(
     const result = await fetchJson(url, timeoutMs);
     const interpretation = interpretRdapResponse(result.status, result.json);
 
-    return {
+    const checkResult: CheckResult = {
       domain,
       status: interpretation.status,
       httpStatus: result.status,
-      errorCode: interpretation.errorCode,
       source: authUrl,
       responseTimeMs: result.responseTimeMs
     };
+
+    if (interpretation.errorCode !== undefined) {
+      checkResult.errorCode = interpretation.errorCode;
+    }
+
+    return checkResult;
   } catch {
     return null;
   }
