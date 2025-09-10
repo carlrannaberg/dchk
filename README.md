@@ -48,13 +48,13 @@ dchk google.com facebook.com nonexistent123.com
 
 Get detailed information with response times and sources:
 ```bash
-dchk --verbose google.com facebook.com lunar.io
+dchk --verbose google.com facebook.com nonexistent123.com
 # Output:
 # DOMAIN       STATUS      TIME   SOURCE
 # ────────────────────────────────────────────
 # google.com   REGISTERED  634ms  rdap.verisign.com
 # facebook.com REGISTERED  521ms  rdap.verisign.com
-# lunar.io     AVAILABLE   387ms  rdap.org
+# nonexistent123.com     AVAILABLE   387ms  rdap.org
 ```
 
 ### Stdin Input
