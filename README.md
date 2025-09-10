@@ -1,4 +1,4 @@
-# dchk
+# dchk (domain availability check)
 
 A fast, UNIX-style domain availability checker using the RDAP protocol.
 
