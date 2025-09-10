@@ -59,6 +59,9 @@ analyze-*.sh
 *-debug.*
 *.debug
 
+# Claude settings (user-specific)
+.claude/settings.local.json
+
 # Don't ignore reports directory
 !reports/
 !reports/**

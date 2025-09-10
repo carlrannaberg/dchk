@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Read(//Users/carl/Development/agents/claudekit/**)"
-    ],
-    "deny": [],
-    "ask": []
-  }
-}
