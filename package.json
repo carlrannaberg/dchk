@@ -1,7 +1,7 @@
 {
   "name": "dchk",
   "version": "0.1.0",
-  "description": "CLI tools for development workflow",
+  "description": "UNIX-style domain availability checker (RDAP-first)",
   "type": "module",
   "engines": {
     "node": ">=20.0.0"
@@ -54,10 +54,13 @@
     "vitest": "^3.2.4"
   },
   "keywords": [
+    "domain",
+    "rdap", 
+    "availability",
     "cli",
-    "dchk",
-    "development",
-    "workflow"
+    "unix",
+    "whois",
+    "dchk"
   ],
   "author": "",
   "license": "MIT"
