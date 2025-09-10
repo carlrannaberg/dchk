@@ -24,16 +24,6 @@ A fast, UNIX-style domain availability checker using the RDAP protocol.
 npm install -g dchk
 ```
 
-### From Source
-
-```bash
-git clone https://github.com/carlrannaberg/dchk.git
-cd dchk
-npm install
-npm run build
-npm link
-```
-
 ## Usage
 
 ### Basic Usage
